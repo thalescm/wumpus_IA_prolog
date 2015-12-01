@@ -1,0 +1,36 @@
+%-------------------------------------------------------------------------------
+A few word about the agent strategy
+
+Different Possible End: 
+	Out/In the cave, and with/without gold, and with/without wumpus dead
+
+Agent's Strategy
+	depends on his courage and his goal
+	in priority :
+	
+	Reflex :	
+	 	rebound, die, grab, shoot, climb with hold
+	Find Out : 
+		while he's not tired he looks for the gold 
+		increasing the risk...
+	Go Out : our alogorithm is very simple and works easily 
+		because it's only a small map
+		
+		
+%-------------------------------------------------------------------------------
+To improve
+
+->when 
+	there is no good room,
+	wumpus alive,
+	arrow==1,
+	agent motivated,
+	so	implement the search of wumpus to kill him.
+	
+-> allow the wumpus to move.
+
+-> put a second agent to communicate eachother.
+
+-> implement a search algorithm to come back
+	
+->...

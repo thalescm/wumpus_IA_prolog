@@ -1,0 +1,197 @@
+CIS587: The Wumpus World
+
+this page come from ...
+http://www.cis.temple.edu/~ingargio/cis587/readings/index.html
+Thank you a lot.
+
+Last Modified: Tuesday, 10-Feb-1998 22:02:21 EST 
+
+  Rules of the Wumpus World 
+  The Situation Calculus 
+  The Frame Problem 
+  Representing Knowledge about the Wumpus World 
+  Model-Based and Diagnostic Reasoning 
+  Some Questions 
+
+A variety of "worlds" are being used as examples for Knowledge Representation, Reasoning, and Planning. Among them the Vacuum
+World, the Block World, and the Wumpus World. We will examine the Wumpus World and in this context introduce the Situation Calculus,
+the Frame Problem, and a variety of axioms. 
+
+The Wumpus World was introduced by Genesereth, and is discussed in Russell-Norvig. The Wumpus World is a simple world (as is the
+Block World) for which to represent knowledge and to reason. 
+
+It is a cave with a number of rooms, represented as a 4x4 square. 
+
+        +---------+---------+---------+---------+
+     4  | stench  |         | breeze  |  pit    |
+        |         |         |         |         |
+        |         |         |         |         |
+        +---------+---------+---------+---------+
+     3  | wumpus  | stench  | pit     | breeze  |
+        |         | breeze  |         |         |
+        |         | gold    |         |         |
+        +---------+---------+---------+---------+
+     2  | stench  |         | breeze  |         |
+        |         |         |         |         |
+        |         |         |         |         |
+        +---------+---------+---------+---------+
+     1  | start   | breeze  | pit     | breeze  |
+        |         |         |         |         |
+        |   ==>   |         |         |         |
+        +---------+---------+---------+---------+
+            1         2         3         4
+
+Rules of the Wumpus World
+
+The neighborhood of a node consists of the four squares north, south, east, west of the given square. 
+
+In a square the agent gets a vector of percepts, with components 
+
+      Stench,Breeze,Glitter,Bump,Scream 
+
+For example [Stench,None,Glitter,None,None] 
+
+      Stench is perceived at a square iff the wumpus is at this square or in its neighborhood. 
+      Breeze is perceived at a square iff a pit is in the neighborhood of this square. 
+      Glitter is perceived at a square iff gold is in this square 
+      Bump is perceived at a square iff the agent goes Forward into a wall 
+      Scream is perceived at a square iff the wumpus is killed anywhere in the cave 
+
+An agent can do the following actions (one at a time): 
+
+      Turn(Right), Turn(Left), Forward, Shoot, Grab, Release, Climb 
+
+      The agent can go Forward in the direction it is currently facing, or Turn Right, or Turn Left. Going Forward into a wall will generate
+      a Bump percept. 
+      The agent has a single arrow that it can Shoot. It will go straight in the direction faced by the agent until it hits (and kills) the
+      wumpus, or hits (and is absorbed by) a wall. 
+      The agent can Grab a portable object at the current square or it can Release an object that it is holding. 
+      The agent can Climb out of the cave if at the Start square. 
+
+The Start square is (1,1) and initially the agent is facing east. The agent dies if it is in the same square as the wumpus.
+The objective of the game is to kill the wumpus, to pick up the gold, and to climb out with it. 
+
+The Situation Calculus
+
+The Situation Calculus is used in cases as the one that we are now considering. With the name Situation we mean a state of the world.
+The Situation Calculus is used to reason about actions and their effect on the possible states of the world.
+We will limit our discussion of the Situation Calculus to the case of the Wumpus World. 
+
+The Frame Problem
+
+We are reasoning about possible states of the world, where the states are identified by the actions by which we got to that state from the
+initial state. The Frame Problem is concerned with the question of what happens to the truth-value of the statements that describe the
+world as we go from one world to the world resulting by application of an action. 
+
+We deal with the frame problem by introducing a certain number of axioms, that go by names such as Effect Axioms, Frame Axioms, and
+Successor-State Axioms. 
+
+Representing our Knowledge about the Wumpus World
+
+Percept(x,y) 
+      where x must be a percept vector and y must be a situation. It means that at situation y the agent perceives x.
+      For convenience we introduce the following definitions: 
+            Percept([Stench,y,z,w,v],t) = > Stench(t) 
+            Percept([x,Breeze,z,w,v],t) = > Breeze(t) 
+            Percept([x,y,Glitter,w,v],t) = > AtGold(t) 
+Holding(x,y) 
+      where x is an object and y is a situation. It means that the agent is holding the object x in situation y. 
+Action(x,y) 
+      where x must be an action (i.e. Turn(Right), Turn(Left), Forward, ..) and y must be a situation. It means that at situation y the
+      agent takes action x. 
+At(x,y,z) 
+      where x is an object, y is a Location, i.e. a pair [u,v] with u and v in {1,2,3,4}, and z is a situation. It means that the agent x in
+      situation z is at location y. 
+Present(x,s) 
+      means that object x is in the current room in the situation s. 
+Result(x,y) 
+      It means that the result of applying action x to the situation y is the situation Result(x,y). Note that Result(x,y) is a term, not a
+      statement.
+      For example we can say 
+            Result(Forward, S0) = S1 
+            Result(Turn(Right),S1) = S2 
+
+These definitions could be made more general. Since in the Wumpus World there is a single agent, there is no reason for us to make
+predicates and functions relative to a specific agent. In other "worlds" we should change things appropriately.
+Another generalization is possible, to write all assertions about the world as terms, and then add the predicates 
+
+T(situation assertion-term) 
+      to mean that in the specified situation the specified assertion is true. 
+Belief(agent situation assertion-term) 
+      to mean that the specified agent in the specified situation believes the specified assertion to be true. 
+
+Here are a series of statements about the Wumpus World. 
+
+Effect Axioms
+
+Effect axioms characterize what is changed because of an action. For example: 
+
+      Present(x,s) & Portable(x) = > Holding(x, Result(Grab,s)) 
+      Not Holding(x, Result(Release,s)) 
+
+Frame Axioms
+
+Frame axioms characterize what has remained the same because of an action. For example: 
+
+      Holding(x,s) & (a/=Release) = > Holding(x,Result(a,s)) 
+      NOT Holding(x,s) & ((a/=Grab)) | NOT(Present(x,s) & Portable(x)) = > NOT Holding(x,Result(a,s)) 
+
+Successor-State Axioms
+
+For each predicate that can change over time they characterize the actions under which it changes and the actions under which it remains
+the same. For example: 
+
+      Holding(x,Result(a,s)) IFF [(a=Grab & Present(x,s) & Portable(x)) OR (Holding(x,s) & (a/=Release)) 
+
+More Definitions and Axioms
+
+      Orientation(Agent,s0) = 0 
+      At(Agent,[1,1],s0) 
+
+      Portable(Gold) 
+      AtGold(s) = > Present(Gold, s) 
+
+      LocationToward([x,y],0) = [x+1,y] 
+      LocationToward([x,y],90) = [x,y+1] 
+      LocationToward([x,y],180) = [x-1,y] 
+      LocationToward([x,y],270) = [x,y-1] 
+
+      At(p,l,s) = > LocationAhead(p,s) = LocationToward(l, Orientation(p,s)) 
+      Adjacent(l1,l2) IFF EXISTS d (l1 = LocationToward(l2,d)) 
+      Wall([x,y]) IFF (x=0 OR x=5 OR y=0 OR y=5) 
+      At(p,l,Result(a,s)) IFF [(a=Forward & l=LocationAhead(p,s) & NOT Wall(l)) OR (At(p,l,s) & a/=Forward)] 
+      Orientation(p,Result(a,s))=d IFF [
+      (a=Turn(Right) & d=Mod(Orientation(p,s)-90,360)) OR
+      (a=Turn(Left) & d=Mod(Orientation(p,s)+90,360)) OR 
+      (Orientation(p,s)=d & NOT(a=Turn(Right) & a=Turn(Left)))] 
+
+      At(Wumpus.l1,s) & Adjacent(l1,l2) = > Smelly(l2) 
+      At(Pit,l1,s) & Adjacent(l1,l2) = > Breezy(l2) 
+
+Model-Based and Diagnostic Reasoning
+
+Causal Rules specify how aspects of the state of the world determine our percepts. Model-Based Reasoning is what we do when we
+use causal rules. Here are some causal rules: 
+
+      At(Wumpus,l1,s) & Adjacent(l1,l2) = > Smelly(l2) 
+      At(Pit,l1,s) & Adjacent(l1,l2) = > Breezy(l2) 
+
+Diagnostic Rules specify how to go from percepts to assertions about the state of the world. Diagnostic Reasoning is what we do when
+we use diagnostic rules. Here are some diagnostic rules: 
+
+      At(Agent,l,s) & Breeze(s) = > Breezy(l) 
+      At(Agent,l,s) & Stench(s) = > Smelly(l) 
+      Smelly(l1) = > (EXISTS l2 At(Wumpus,l2,s) & (l2=l1 OR Adjacent(l1,l2))) 
+      At(Wumpus,x,t) & NOT Pit(x) IFF OK(x) 
+
+Some Questions
+
+Many questions arise because of what has been done above. Here are some such questions: 
+
+    1.Have we specified enough axioms about the Wumpus World for us to solve our stated problem? 
+    2.How does one acquire the needed domain knowledge about the Wumpus World? 
+    3.How much of the work done for this world can be used when studying other worlds? 
+    4.Clearly we could write an algorithm that would solve the Wumpus problem in an ad-hoc fashion. Is the approach that we have
+      chosen ultimately more general, more effective than the use ad-hoc prescriptive procedures? 
+
+ingargiola@cis.temple.edu 

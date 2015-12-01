@@ -1,0 +1,14 @@
+Under UNIX, SICStus Prolog
+
+Either
+	prolog -l wumpus12.pl
+
+Or
+	launch prolog
+ 	and load each file : like that ['myfile.pl'].
+	for :	ask.pl disp.pl main.pl perc.pl decl.pl exec.pl more.pl tell.pl
+	
+	
+If you need some Information, don't forgrt to visit this page:
+About Prolog
+http://www.csd.uu.se/documentation/languages/prolog/sicstus/sicstus_toc.html

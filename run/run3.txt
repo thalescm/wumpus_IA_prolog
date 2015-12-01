@@ -1,0 +1,91 @@
+Run 3: 
+   
+-----------------
+|   |   |   | P |
+-----------------       with    A, Agent
+|   |   | P | G |               W, Wumpus
+-----------------               P, Pit
+|   |   | W |   |               G, Gold
+-----------------
+| A |   | P |   |
+-----------------    
+the game is begun.
+| -> Agent health : perfect_health
+| -> Wumpus Health : alive
+| -> Time : 0
+| -> Number of visited room : 0
+| -> Number of total room : 16
+| -> Score : 0
+| -> Gold : not_found
+| -> Strategy Goal : find_out
+| -> Body agent is : in_the_cave
+I'm conquering the World Ah!Ah!...
+>I'm in [1,1], turned to east, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [2,1], turned to east, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [2,1], turned to north, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [2,1], turned to west, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [2,1], turned to south, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [2,0], turned to south, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [2,1], turned to south, I feel [no,yes,no,no,no], I'm doing : turnrigh
+>I'm in [2,1], turned to west, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [1,1], turned to west, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [0,1], turned to west, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [1,1], turned to west, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,1], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,0], turned to south, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [1,1], turned to south, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,1], turned to east, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,1], turned to north, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,2], turned to north, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,3], turned to north, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,4], turned to north, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,5], turned to north, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [1,4], turned to north, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,4], turned to west, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [0,4], turned to west, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [1,4], turned to west, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,4], turned to south, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,4], turned to east, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [2,4], turned to east, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [3,4], turned to east, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [3,4], turned to north, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [3,5], turned to north, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [3,4], turned to north, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [3,4], turned to west, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [2,4], turned to west, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [2,4], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [2,3], turned to south, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [2,2], turned to south, I feel [yes,no,no,no,no], I'm doing : forward
+>I'm in [2,1], turned to south, I feel [no,yes,no,no,no], I'm doing : turnrigh
+>I'm in [2,1], turned to west, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [1,1], turned to west, I feel [no,no,no,no,no], I'm doing : turnright
+>I'm in [1,1], turned to north, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,2], turned to north, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,2], turned to west, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [0,2], turned to west, I feel [no,no,no,yes,no], I'm doing : rebound
+>I'm in [1,2], turned to west, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,2], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,1], turned to south, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,1], turned to east, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [2,1], turned to east, I feel [no,yes,no,no,no], I'm doing : turnleft
+>I'm in [2,1], turned to north, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [2,2], turned to north, I feel [yes,no,no,no,no], I'm doing : forward
+>I'm in [2,3], turned to north, I feel [no,yes,no,no,no], I'm doing : forward
+>I'm in [2,4], turned to north, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [2,4], turned to west, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,4], turned to west, I feel [no,no,no,no,no], I'm doing : turnleft
+>I'm in [1,4], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,3], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,2], turned to south, I feel [no,no,no,no,no], I'm doing : forward
+>I'm in [1,1], turned to south, I feel [no,no,no,no,no], I'm doing : climb
+the game is finished.
+| -> Agent health : a_little_tired_but_alive
+| -> Wumpus Health : alive
+| -> Time : 58
+| -> Number of visited room : 16
+| -> Number of total room : 16
+| -> Score : -58
+| -> Gold : not_found
+| -> Strategy Goal : find_out
+| -> Body agent is : out_the_cave
+:| I am sure Wumpus has moved !!!
