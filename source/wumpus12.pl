@@ -192,7 +192,7 @@ initialize_agent(fig62):-
 		
 % initialization general
 initialize_general :-
-	initialize_land(fig62),		% Which map you wish
+	initialize_land(test),		% Which map you wish
 	initialize_agent(fig62),
 	retractall(time(_)),
 	assert(time(0)),
@@ -908,6 +908,21 @@ apply(grab) :-
 	retractall(is_gold(_)),		% The gold is with me!
 	assert(agent_hold),		% money, money,  :P 
 	retractall(agent_goal(_)),
+	wumpus_healthy,
+	assert(agent_goal(find_out)),
+	format("Yomi! Yomi! Give me the money >=}...~n",[]),
+	!.				
+	
+apply(grab) :-
+	agent_score(S),
+	score_grab(SG),
+	New_S is S + SG,
+	retractall(agent_score(S)),
+	assert(agent_score(New_S)),
+	retractall(gold_location(_)),	% no more gold at this place
+	retractall(is_gold(_)),		% The gold is with me!
+	assert(agent_hold),		% money, money,  :P 
+	retractall(agent_goal(_)),
 	assert(agent_goal(go_out)),	% Now I want to go home
 	format("Yomi! Yomi! Give me the money >=}...~n",[]),
 	!.				
@@ -1002,15 +1017,9 @@ is_nb_visited :-
 	
 is_nb_visited.
 	
-agent_courage :-	% we choose arbitrory thanks to a lot of tries.
-			% we could compute nb_visited / max_room_to_visit
-	time(T),		% time 	
-	nb_visited(N),		% number of visted room
-	land_extent(LE),	% size of the land
-	E is LE * LE,  		% maximum of room to visit
-	NPLUSE is E * 2,
-% 	NPLUSE is E * 2 + N,	
-	inf_equal(T,NPLUSE).
+agent_courage :-	
+	wumpus_healthy;
+	no(agent_hold).
 
 % A location is estimated thanks to ... good, medium, risky, deadly.	
 
