@@ -192,7 +192,7 @@ initialize_agent(fig62):-
 		
 % initialization general
 initialize_general :-
-	initialize_land(test),		% Which map you wish
+	initialize_land(fig62),		% Which map you wish
 	initialize_agent(fig62),
 	retractall(time(_)),
 	assert(time(0)),
@@ -203,9 +203,9 @@ initialize_general :-
 	retractall(score_climb_with_gold(_)),
 	assert(score_climb_with_gold(1000)),
 	retractall(score_grab(_)),
-	assert(score_grab(0)),
+	assert(score_grab(100)),
 	retractall(score_wumpus_dead(_)),
-	assert(score_wumpus_dead(0)),
+	assert(score_wumpus_dead(70)),
 	retractall(is_situation(_,_,_,_,_)),
 	retractall(short_goal(_)).
 
@@ -1017,7 +1017,16 @@ is_nb_visited :-
 	
 is_nb_visited.
 	
-agent_courage :-	
+agent_courage :-	% we choose arbitrory thanks to a lot of tries.
+			% we could compute nb_visited / max_room_to_visit
+	agent_courage_base,
+	time(T),		% time 	
+	score_wumpus_dead(W),
+	score_grab(G),
+	A is W + G,
+	inf_equal(T, A).
+		
+agent_courage_base :-	
 	wumpus_healthy;
 	no(agent_hold).
 
