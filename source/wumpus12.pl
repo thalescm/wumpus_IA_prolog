@@ -192,7 +192,7 @@ initialize_agent(fig62):-
 		
 % initialization general
 initialize_general :-
-	initialize_land(test),		% Which map you wish
+	initialize_land(fig62),		% Which map you wish
 	initialize_agent(fig62),
 	retractall(time(_)),
 	assert(time(0)),
@@ -463,12 +463,34 @@ add_gold_KB(yes) :-
 add_gold_KB(no).		
 
 % update our knowledge about wall presence
+% Now it is assumed that the map is always retangular
 
 add_wall_KB(yes) :-			% here I know where there is wall
-	agent_location(L),		% because I'm in ...	
-	retractall(is_wall(L)),	
-	assert(is_wall(L)),
-	!.					
+	agent_location([X,Y]),		% because I'm in ...
+	land_extent(L),
+	X = L,
+	assert(is_wall([X,_]),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	X = 0,
+	assert(is_wall([X,_])),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	land_extent(L),
+	Y = L,
+	assert(is_wall([_,Y])),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	Y = 0,
+	assert(is_wall([_,Y])),
+	!.
+	
 add_wall_KB(no).
 		
 % update our knowledge about wumpus health 
