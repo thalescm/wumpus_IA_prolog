@@ -166,6 +166,19 @@ initialize_land(test):-
 	assert(pit_location([3,3])),
 	assert(pit_location([4,4])),
 	assert(pit_location([3,1])).
+	
+initialize_land(ep_land_1):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([3,2])),
+	assert(wumpus_healthy),
+	assert(gold_location([4,4])),
+	assert(pit_location([4,1])),
+	assert(pit_location([1,4])).
 
 % create an agent with the initial features described in the section 6.2
 initialize_agent(fig62):-	
@@ -203,9 +216,9 @@ initialize_general :-
 	retractall(score_climb_with_gold(_)),
 	assert(score_climb_with_gold(1000)),
 	retractall(score_grab(_)),
-	assert(score_grab(100)),
+	assert(score_grab(0)),
 	retractall(score_wumpus_dead(_)),
-	assert(score_wumpus_dead(70)),
+	assert(score_wumpus_dead(0)),
 	retractall(is_situation(_,_,_,_,_)),
 	retractall(short_goal(_)).
 
@@ -1019,16 +1032,26 @@ is_nb_visited.
 	
 agent_courage :-	% we choose arbitrory thanks to a lot of tries.
 			% we could compute nb_visited / max_room_to_visit
-	agent_courage_base,
+	agent_courage_base;
+	agent_courage_score;
+	agente_courage_land.
+		
+agent_courage_base :-	
+	wumpus_healthy;
+	no(agent_hold).
+	
+agent_courage_score :-
 	time(T),		% time 	
 	score_wumpus_dead(W),
 	score_grab(G),
 	A is W + G,
 	inf_equal(T, A).
-		
-agent_courage_base :-	
-	wumpus_healthy;
-	no(agent_hold).
+	
+agente_courage_land :-
+	nb_visited(N),
+	land_extent(S),
+	A is S * S,
+	inf_equal(N, A).
 
 % A location is estimated thanks to ... good, medium, risky, deadly.	
 
