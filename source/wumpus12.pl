@@ -166,6 +166,46 @@ initialize_land(test):-
 	assert(pit_location([3,3])),
 	assert(pit_location([4,4])),
 	assert(pit_location([3,1])).
+	
+initialize_land(ep_land_1):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([3,2])),
+	assert(wumpus_healthy),
+	assert(gold_location([4,4])),
+	assert(pit_location([4,1])),
+	assert(pit_location([1,4])).
+	
+initialize_land(ep_land_2):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([1,2])),
+	assert(wumpus_healthy),
+	assert(gold_location([2,1])),
+	assert(pit_location([2,2])).
+	
+	
+initialize_land(ep_land_3):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([2,3])),
+	assert(wumpus_healthy),
+	assert(gold_location([1,2])),
+	assert(pit_location([2,2])),
+	assert(pit_location([2,4])).
+
 
 % create an agent with the initial features described in the section 6.2
 initialize_agent(fig62):-	
@@ -192,7 +232,7 @@ initialize_agent(fig62):-
 		
 % initialization general
 initialize_general :-
-	initialize_land(test),		% Which map you wish
+	initialize_land(ep_land_3),		% Which map you wish
 	initialize_agent(fig62),
 	retractall(time(_)),
 	assert(time(0)),
@@ -463,12 +503,34 @@ add_gold_KB(yes) :-
 add_gold_KB(no).		
 
 % update our knowledge about wall presence
+% Now it is assumed that the map is always retangular
 
 add_wall_KB(yes) :-			% here I know where there is wall
-	agent_location(L),		% because I'm in ...	
-	retractall(is_wall(L)),	
-	assert(is_wall(L)),
-	!.					
+	agent_location([X,Y]),		% because I'm in ...
+	land_extent(L),
+	X = L,
+	assert(is_wall([X,_]),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	X = 0,
+	assert(is_wall([X,_])),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	land_extent(L),
+	Y = L,
+	assert(is_wall([_,Y])),
+	!.
+
+add_wall_KB(yes) :-			% here I know where there is wall
+	agent_location([X,Y]),		% because I'm in ...
+	Y = 0,
+	assert(is_wall([_,Y])),
+	!.
+	
 add_wall_KB(no).
 		
 % update our knowledge about wumpus health 
@@ -886,6 +948,21 @@ apply(grab) :-
 	retractall(is_gold(_)),		% The gold is with me!
 	assert(agent_hold),		% money, money,  :P 
 	retractall(agent_goal(_)),
+	wumpus_healthy,
+	assert(agent_goal(find_out)),
+	format("Yomi! Yomi! Give me the money >=}...~n",[]),
+	!.				
+	
+apply(grab) :-
+	agent_score(S),
+	score_grab(SG),
+	New_S is S + SG,
+	retractall(agent_score(S)),
+	assert(agent_score(New_S)),
+	retractall(gold_location(_)),	% no more gold at this place
+	retractall(is_gold(_)),		% The gold is with me!
+	assert(agent_hold),		% money, money,  :P 
+	retractall(agent_goal(_)),
 	assert(agent_goal(go_out)),	% Now I want to go home
 	format("Yomi! Yomi! Give me the money >=}...~n",[]),
 	!.				
@@ -980,15 +1057,42 @@ is_nb_visited :-
 	
 is_nb_visited.
 	
-agent_courage :-	% we choose arbitrory thanks to a lot of tries.
-			% we could compute nb_visited / max_room_to_visit
+% agent will try to always run through half of the map, 
+%	kill wumpus and get the gold,
+%	unless it exceeds the limit courage time
+agent_courage :-
+	agent_courage_base_and_scoe,
+	agente_courage_time.
+		
+agent_courage_base_and_scoe :-
+	agent_courage_base;
+	agent_courage_score;
+	agente_courage_land.
+	
+agent_courage_base :-	
+	wumpus_healthy;
+	no(agent_hold).
+	
+agent_courage_score :-
 	time(T),		% time 	
-	nb_visited(N),		% number of visted room
-	land_extent(LE),	% size of the land
-	E is LE * LE,  		% maximum of room to visit
-	NPLUSE is E * 2,
-% 	NPLUSE is E * 2 + N,	
-	inf_equal(T,NPLUSE).
+	score_wumpus_dead(W),
+	score_grab(G),
+	A is W + G,
+	inf_equal(T, A).
+	
+agente_courage_land :-
+	nb_visited(N),
+	land_extent(S),
+	A is S * S,
+	B is A / 2,
+	inf_equal(N, B).
+	
+agente_courage_time :-
+	time(N),
+	land_extent(S),
+	A is S * S,
+	B is A * 2,
+	inf_equal(N, B).
 
 % A location is estimated thanks to ... good, medium, risky, deadly.	
 
