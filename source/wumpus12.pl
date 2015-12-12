@@ -179,6 +179,33 @@ initialize_land(ep_land_1):-
 	assert(gold_location([4,4])),
 	assert(pit_location([4,1])),
 	assert(pit_location([1,4])).
+	
+initialize_land(ep_land_2):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([1,2])),
+	assert(wumpus_healthy),
+	assert(gold_location([2,1])),
+	assert(pit_location([2,2])).
+	
+	
+initialize_land(ep_land_3):-
+	retractall(land_extent(_)),	
+	retractall(wumpus_location(_)),
+	retractall(wumpus_healthy),
+	retractall(gold_location(_)),
+	retractall(pit_location(_)),
+	assert(land_extent(5)),
+	assert(wumpus_location([2,3])),
+	assert(wumpus_healthy),
+	assert(gold_location([1,2])),
+	assert(pit_location([2,2])),
+	assert(pit_location([2,4])).
+
 
 % create an agent with the initial features described in the section 6.2
 initialize_agent(fig62):-	
@@ -205,7 +232,7 @@ initialize_agent(fig62):-
 		
 % initialization general
 initialize_general :-
-	initialize_land(fig62),		% Which map you wish
+	initialize_land(ep_land_3),		% Which map you wish
 	initialize_agent(fig62),
 	retractall(time(_)),
 	assert(time(0)),
@@ -1030,12 +1057,18 @@ is_nb_visited :-
 	
 is_nb_visited.
 	
-agent_courage :-	% we choose arbitrory thanks to a lot of tries.
-			% we could compute nb_visited / max_room_to_visit
+% agent will try to always run through half of the map, 
+%	kill wumpus and get the gold,
+%	unless it exceeds the limit courage time
+agent_courage :-
+	agent_courage_base_and_scoe,
+	agente_courage_time.
+		
+agent_courage_base_and_scoe :-
 	agent_courage_base;
 	agent_courage_score;
 	agente_courage_land.
-		
+	
 agent_courage_base :-	
 	wumpus_healthy;
 	no(agent_hold).
@@ -1051,7 +1084,15 @@ agente_courage_land :-
 	nb_visited(N),
 	land_extent(S),
 	A is S * S,
-	inf_equal(N, A).
+	B is A / 2,
+	inf_equal(N, B).
+	
+agente_courage_time :-
+	time(N),
+	land_extent(S),
+	A is S * S,
+	B is A * 2,
+	inf_equal(N, B).
 
 % A location is estimated thanks to ... good, medium, risky, deadly.	
 
